@@ -330,7 +330,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         Alivio’s simple yet powerful three-step process — Personalize, Write & Understand, and Alivio! — makes stress management accessible and effective. With unlimited journals addressing emotions like anxiety, sadness, or anger, we provide a safe space for reflection and growth. Backed by research, journaling helps reduce stress, improve mental clarity, and foster well-being, making Alivio your partner in creating a calmer, happier life.
                         </p>
                     </div>
-                    <img alt="why works img" src="../img/why-works.jpg" class="why__works-img">
+                    <img alt="why works img" src="img/why-works.jpg" class="why__works-img">
                     </div>
                     `;
 
@@ -348,7 +348,7 @@ window.addEventListener('DOMContentLoaded', () => {
                         </p>
                         <div class="button button_works">Join to us</div>
                         </div>
-                        <img class="why__join-img" src="../img/why-join.jpg" alt="kayla">
+                        <img class="why__join-img" src="img/why-join.jpg" alt="kayla">
 
                         </div>
                     `;
@@ -431,7 +431,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     <div class="solutions__solves-wrapper">
 
-                    <img src="/img/solutions-solves.jpg" alt="solves img" class="solutions__solves-img">
+                    <img src="img/solutions-solves.jpg" alt="solves img" class="solutions__solves-img">
 
                     <div class="solutions__solves-text">
                     <p class="text text_solves">
@@ -551,7 +551,7 @@ window.addEventListener('DOMContentLoaded', () => {
                     <p class="text text_solves text_community-how">
                     Our Community is grounded in three principles: Connect, Share, Empower. By joining, you’ll find a safe space to express yourself, learn from others, and celebrate your progress. Whether you’re taking your first steps or mentoring others, our Community helps you grow stronger together.
                     </p>
-                    <img class="community__how-img" src="/img/community.jpg" alt="community how">
+                    <img class="community__how-img" src="img/community.jpg" alt="community how">
                     `;
 
                     communityHowSection.after(createSection('community__join'));
