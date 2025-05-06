@@ -296,22 +296,22 @@ window.addEventListener('DOMContentLoaded', () => {
                         </h2>
                     <ul class="why__choose-ul">
                         <li class="why__choose-li">
-                        <img class="why__choose-icon" alt="list icon" src="../icons/list.svg">
+                        <img class="why__choose-icon" alt="list icon" src="icons/list.svg">
                             <p class="text text_title">Tailored to You: Through a quick, intuitive survey, we customize your journaling experience to focus on your unique stress triggers, emotional expressions, and personal goals.</p>
                         </li>
 
                         <li class="why__choose-li">
-                        <img class="why__choose-icon" alt="list icon" src="../icons/list.svg">
+                        <img class="why__choose-icon" alt="list icon" src="icons/list.svg">
                         <p class="text text_title">Guided Emotional Clarity: Write, reflect, and explore with expertly crafted prompts designed to uncover insights and provide practical strategies for stress relief.</p>
                         </li>
 
                         <li class="why__choose-li">
-                        <img class="why__choose-icon" alt="list icon" src="../icons/list.svg">
+                        <img class="why__choose-icon" alt="list icon" src="icons/list.svg">
                         <p class="text text_title">Empowering Self-Awareness: Gain a deeper understanding of what drives your stress and learn tools to overcome it, building emotional strength for the long term.</p>
                         </li>
 
                         <li class="why__choose-li">
-                        <img class="why__choose-icon" alt="list icon" src="../icons/list.svg">
+                        <img class="why__choose-icon" alt="list icon" src="icons/list.svg">
                         <p class="text text_title">Proven Success: See how Alivio has transformed lives, like Kayla’s, through real stories of stress management and personal growth.</p>
                         </li>
 
@@ -392,28 +392,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     <ul class="solutions__our-ul">
 
                     <li class="solutions__our-li">
-                    <img src="/icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Personalized Journals: Answer a quick survey to create a custom journal that targets your unique stress triggers, whether it’s anxiety, overwhelm, or sadness. Each journal guides you through prompts tailored to your needs.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Stress Assessment Tools: Gain clarity with our intuitive surveys that identify your stress patterns and emotional responses, helping you focus on what matters most.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Guided Reflection: Write, reflect, and grow with expertly crafted prompts that encourage self-awareness and provide practical strategies to overcome stress.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/our-list.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Real-Life Impact: See how Alivio’s solutions have helped users like Kayla take control of their stress.
                     </p>
@@ -512,28 +512,28 @@ window.addEventListener('DOMContentLoaded', () => {
                     <ul class="solutions__our-ul">
 
                     <li class="solutions__our-li">
-                    <img src="/icons/community.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/community.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Share Your Voice: Tell your story, share your insights, or offer tips to inspire others. Your perspective matters.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/community.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/community.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Build Connections: Meet people who understand your journey, creating bonds that foster growth and support.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/community.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/community.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Find Inspiration: Be moved by stories like Emma’s, who discovered new strength through the support of our Community.
                     </p>
                     </li>
 
                     <li class="solutions__our-li">
-                    <img src="/icons/community.svg" alt="solutions icon" class="solutions__our-icon">
+                    <img src="icons/community.svg" alt="solutions icon" class="solutions__our-icon">
                     <p class="text text_title">
                     Engage in Events: Participate in virtual meetups, discussions, and expert-led sessions designed to empower you.
                     </p>
