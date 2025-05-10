@@ -1,129 +1,88 @@
 window.addEventListener('DOMContentLoaded', () => {
-    const modal = document.querySelector('.login-block'),
-        buttons = document.querySelectorAll('.button');
 
-    function modalActive(button, window) {
-        if (button.length > 1) {
-            button.forEach(item => {
-                item.addEventListener('click', (event) => {
+    const checkLogin = Boolean(localStorage.getItem("login"));
+
+    // console.log(checkLogin);
+
+    if (checkLogin) {
+        loginActive();
+        loginActiveMenu();
+        loginActiveEvents();
+    } else {
+        const modal = document.querySelector('.login-block'),
+            buttons = document.querySelectorAll('.button');
+
+        function modalActive(button, window) {
+            if (button.length > 1) {
+                button.forEach(item => {
+                    item.addEventListener('click', (event) => {
+                        const target = event.target;
+                        if (!target.closest('.login-block__inputs')) {
+                            window.classList.add('login-active');
+                            document.body.style.overflow = 'hidden';
+                        };
+                    });
+                });
+            } else {
+                button.addEventListener('click', (event) => {
                     const target = event.target;
                     if (!target.closest('.login-block__inputs')) {
                         window.classList.add('login-active');
                         document.body.style.overflow = 'hidden';
                     };
                 });
-            });
-        } else {
-            button.addEventListener('click', (event) => {
-                const target = event.target;
-                if (!target.closest('.login-block__inputs')) {
-                    window.classList.add('login-active');
-                    document.body.style.overflow = 'hidden';
-                };
-            });
-        }
-    };
-
-    function modalClose(window) {
-        // const close = document.querySelector('.login-block__close');
-        // close.addEventListener('click', () => {
-        //     modal.classList.remove('login-active');
-        //     document.body.style.overflow = '';
-        // });
-
-        window.addEventListener('click', (event) => {
-            const target = event.target;
-            const parent = target.closest('.login-block__login-data');
-            if (!parent) {
-                modal.classList.remove('login-active');
-                document.body.style.overflow = '';
-            };
-
-        });
-        document.addEventListener('keyup', (event) => {
-            if (event.key === 'Escape') {
-                modal.classList.remove('login-active');
-                document.body.style.overflow = '';
-            };
-        });
-    };
-
-    modalActive(buttons, modal);
-    modalClose(modal);
-
-    // Одностраничный функционал
-
-    const headerLinks = document.querySelectorAll('.header .link'),
-        footerLinks = document.querySelectorAll('.link_footer'),
-        footerReload = document.querySelector('.title_footer'),
-        logoReload = document.querySelector('.header__logo');
-
-    function reloadPage(footerLink, logoLink) {
-        footerLink.addEventListener('click', () => {
-            window.location.reload();
-        });
-        logoLink.addEventListener('click', () => {
-            window.location.reload();
-        });
-    };
-
-    reloadPage(footerReload, logoReload);
-
-    function activeLink(links, fLinks) {
-
-        function showLink(i = 0) {
-            const active = 'link_active';
-            links[i].classList.add(active);
-            fLinks[i].classList.add(active);
+            }
         };
 
-        function hideLink(links, fLinks) {
-            const active = 'link_active';
-            links.forEach(item => {
-                if (item.classList.contains(active)) {
-                    item.classList.remove(active);
-                }
-            });
-            fLinks.forEach(item => {
-                if (item.classList.contains(active)) {
-                    item.classList.remove(active);
-                }
-            });
-        };
+        function modalClose(window) {
+            // const close = document.querySelector('.login-block__close');
+            // close.addEventListener('click', () => {
+            //     modal.classList.remove('login-active');
+            //     document.body.style.overflow = '';
+            // });
 
-        let linkId = 0;
+            if (modal.classList.entries('login-active')) {
 
-        links.forEach((item, index) => {
-            if (!item.closest('.header__buttons')) {
-                item.addEventListener('click', (event) => {
-                    event.preventDefault();
-
+                window.addEventListener('click', (event) => {
                     const target = event.target;
-                    if (target === links[index]) {
-                        hideLink(headerLinks, footerLinks);
-                        showLink(index);
-                        disableMenu();
-                        linkId = index;
-                        checkId(linkId);
+                    const parent = target.closest('.login-block__login-data');
+                    if (!parent) {
+                        modal.classList.remove('login-active');
+                        document.body.style.overflow = '';
+                    };
+
+                });
+
+                document.addEventListener('keyup', (event) => {
+                    if (event.key === 'Escape') {
+                        modal.classList.remove('login-active');
+                        document.body.style.overflow = '';
                     };
                 });
-            }
-        });
 
-        fLinks.forEach((item, index) => {
-            item.addEventListener('click', (event) => {
-                event.preventDefault();
+            };
+        };
 
-                const target = event.target;
-                if (target === fLinks[index]) {
-                    hideLink(headerLinks, footerLinks);
-                    showLink(index);
-                    disableMenu();
-                    linkId = index;
-                    checkId(linkId);
-                }
-            })
-        });
+        modalActive(buttons, modal);
+        modalClose(modal);
+
+        // Одностраничный функционал
+
+        const headerLinks = document.querySelectorAll('.header .link'),
+            footerLinks = document.querySelectorAll('.link_footer'),
+            footerReload = document.querySelector('.title_footer'),
+            logoReload = document.querySelector('.header__logo');
+
+        function reloadPage(footerLink, logoLink) {
+            footerLink.addEventListener('click', () => {
+                window.location.reload();
+            });
+            logoLink.addEventListener('click', () => {
+                window.location.reload();
+            });
+        };
+
+        reloadPage(footerReload, logoReload);
 
         function disableMenu() {
             const promo = document.querySelector('.promo'),
@@ -138,157 +97,223 @@ window.addEventListener('DOMContentLoaded', () => {
                 product.remove();
             }
         }
+        const active = 'link_active',
+            registerButton = document.querySelector('.link_header');
 
-        function checkId(id) {
-            const header = document.querySelector('.header');
+        let linkId = 0;
 
-            function createSection(name) {
-                const section = document.createElement('section');
-                section.classList.add(name);
-                return section;
+        const why = '.why, .why__choose, .why__works, .why__join',
+            solutions = '.solutions, .solutions__our, .solutions__solves, .solutions__join',
+            community = '.community, .community__why, .community__how, .community__join',
+            pricing = '.pricing, .pricing__plans, .pricing__works, .pricing__join';
+
+        function activeLink(links, fLinks) {
+            const headerButtons = document.querySelector('.header__buttons'),
+                signButton = headerButtons.querySelector('.link_active');
+
+
+            function showLink(i = 0) {
+                links[i].classList.add(active);
+                fLinks[i].classList.add(active);
             };
 
-            function setSectionBackground(name) {
-                const bg = document.createElement('div');
-                bg.classList.add(name);
-                return bg;
-            }
-
-            function hasBgCheck(parent, bgName, prefix) {
-                const getParentChild = parent.firstElementChild;
-                if (getParentChild) {
-                    let checkBg, checkBgPrefix;
-                    if (prefix) {
-                        checkBgPrefix = getParentChild.classList.contains(`${bgName}-bg`);
-                    } else {
-                        checkBg = getParentChild.classList.contains(`${bgName}__bg`);
+            function hideLink(links, fLinks) {
+                const active = 'link_active';
+                links.forEach(item => {
+                    if (item.classList.contains(active)) {
+                        item.classList.remove(active);
                     }
+                });
+                fLinks.forEach(item => {
+                    if (item.classList.contains(active)) {
+                        item.classList.remove(active);
+                    }
+                });
+            };
 
-                    if (checkBg || checkBgPrefix) {
-                        // console.log(checkBgPrefix);
-                        // console.log(getParentChild);
+            links.forEach((item, index) => {
+                if (!item.closest('.header__buttons')) {
+                    item.addEventListener('click', (event) => {
+                        event.preventDefault();
+
+                        const target = event.target;
+                        if (target === links[index]) {
+                            hideLink(headerLinks, footerLinks);
+                            showLink(index);
+                            disableMenu();
+                            linkId = index;
+                            checkId(linkId);
+                        };
+                    });
+                }
+            });
+
+            fLinks.forEach((item, index) => {
+                item.addEventListener('click', (event) => {
+                    event.preventDefault();
+
+                    const target = event.target;
+                    if (target === fLinks[index]) {
+                        hideLink(headerLinks, footerLinks);
+                        showLink(index);
+                        disableMenu();
+                        linkId = index;
+                        checkId(linkId);
+                    }
+                })
+            });
+
+            function checkId(id) {
+                const header = document.querySelector('.header');
+
+                function createSection(name) {
+                    const section = document.createElement('section');
+                    section.classList.add(name);
+                    return section;
+                };
+
+                function setSectionBackground(name) {
+                    const bg = document.createElement('div');
+                    bg.classList.add(name);
+                    return bg;
+                }
+
+                function hasBgCheck(parent, bgName, prefix) {
+                    const getParentChild = parent.firstElementChild;
+                    if (getParentChild) {
+                        let checkBg, checkBgPrefix;
+                        if (prefix) {
+                            checkBgPrefix = getParentChild.classList.contains(`${bgName}-bg`);
+                        } else {
+                            checkBg = getParentChild.classList.contains(`${bgName}__bg`);
+                        }
+
+                        if (checkBg || checkBgPrefix) {
+                            // console.log(checkBgPrefix);
+                            // console.log(getParentChild);
+                            function createContainer() {
+                                const container = document.createElement('div');
+                                container.classList.add('container');
+                                return container;
+                            }
+                            return getParentChild.after(createContainer());
+                        }
+                    } else {
+                        console.error(`HTML element with name: ${parent.classList}\n('Don't have childrens')`);
+                        function createContainer() {
+                            const container = document.createElement('div');
+                            container.classList.add('container');
+                            return container;
+                        };
+                        console.log('Create element as Container')
+                        parent.append(createContainer());
+                        console.log(`HTML element with name: ${parent.classList}\n` + '%cElement was added', 'color: green')
+                    }
+                }
+
+                function setSectionVideoBackground(name, src) {
+                    if (typeof src === 'string') {
+                        const videoBg = document.createElement('video');
+                        videoBg.classList.add(name);
+                        videoBg.setAttribute("autoplay", "");
+                        videoBg.setAttribute("muted", "");
+                        videoBg.setAttribute("loop", "");
+                        videoBg.setAttribute("playsinline", "");
+                        const videoSource = document.createElement('source');
+                        videoSource.setAttribute("type", "video/mp4");
+                        videoSource.setAttribute("src", src);
+                        videoBg.append(videoSource);
+                        return videoBg;
+                    }
+                };
+
+                function hasBgVideoCheck(parent) {
+                    const getParentChild = parent.firstElementChild;
+                    if (getParentChild) {
                         function createContainer() {
                             const container = document.createElement('div');
                             container.classList.add('container');
                             return container;
                         }
-                        return getParentChild.after(createContainer());
+                        getParentChild.after(createContainer());
                     }
-                } else {
-                    console.error(`HTML element with name: ${parent.classList}\n('Don't have childrens')`);
-                    function createContainer() {
-                        const container = document.createElement('div');
-                        container.classList.add('container');
-                        return container;
+                }
+
+                function getSectionName(name) {
+                    return document.querySelector(name);
+                }
+
+                function getSectionContainer(name, shortName) {
+                    if (name.firstElementChild.classList.contains(`${shortName}__bg`) || `${shortName}-bg`) {
+                        return name.lastElementChild;
+                    } else {
+                        return name.firstElementChild;
+                    }
+                }
+
+                function removePreviousPages(elements) {
+                    const blocks = document.querySelectorAll(elements);
+                    if (blocks) {
+                        blocks.forEach(elements => {
+                            elements.remove();
+                        });
                     };
-                    console.log('Create element as Container')
-                    parent.append(createContainer());
-                    console.log(`HTML element with name: ${parent.classList}\n` + '%cElement was added', 'color: green')
-                }
-            }
-
-            function setSectionVideoBackground(name, src) {
-                if (typeof src === 'string') {
-                    const videoBg = document.createElement('video');
-                    videoBg.classList.add(name);
-                    videoBg.setAttribute("autoplay", "");
-                    videoBg.setAttribute("muted", "");
-                    videoBg.setAttribute("loop", "");
-                    videoBg.setAttribute("playsinline", "");
-                    const videoSource = document.createElement('source');
-                    videoSource.setAttribute("type", "video/mp4");
-                    videoSource.setAttribute("src", src);
-                    videoBg.append(videoSource);
-                    return videoBg;
-                }
-            };
-
-            function hasBgVideoCheck(parent) {
-                const getParentChild = parent.firstElementChild;
-                if (getParentChild) {
-                    function createContainer() {
-                        const container = document.createElement('div');
-                        container.classList.add('container');
-                        return container;
-                    }
-                    getParentChild.after(createContainer());
-                }
-            }
-
-            function getSectionName(name) {
-                return document.querySelector(name);
-            }
-
-            function getSectionContainer(name, shortName) {
-                if (name.firstElementChild.classList.contains(`${shortName}__bg`) || `${shortName}-bg`) {
-                    return name.lastElementChild;
-                } else {
-                    return name.firstElementChild;
-                }
-            }
-
-            function removePreviousPages(elements) {
-                const blocks = document.querySelectorAll(elements);
-                if (blocks) {
-                    blocks.forEach(elements => {
-                        elements.remove();
-                    });
                 };
-            };
 
-            function createElement(after, sectionParent, bgSectionName, hasBgElement, bgPrefix, videoPrefix, videoSrc) {
-                after.after(createSection(sectionParent));
-                const section = getSectionName(`.${sectionParent}`);
+                function createElement(after, sectionParent, bgSectionName, hasBgElement, bgPrefix, videoPrefix, videoSrc) {
+                    after.after(createSection(sectionParent));
+                    const section = getSectionName(`.${sectionParent}`);
 
-                let bg;
-                if (hasBgElement) {
-                    bg = setSectionBackground(bgSectionName);
-                    section.append(bg);
+                    let bg;
+                    if (hasBgElement) {
+                        bg = setSectionBackground(bgSectionName);
+                        section.append(bg);
 
-                    if (typeof bgPrefix === 'string') {
-                        // console.log(bgPrefix);
-                        hasBgCheck(section, sectionParent, bgPrefix);
+                        if (typeof bgPrefix === 'string') {
+                            // console.log(bgPrefix);
+                            hasBgCheck(section, sectionParent, bgPrefix);
+                        } else {
+                            hasBgCheck(section, sectionParent);
+                        }
+
+                        // return bg;
+
+                    } else if (videoPrefix) {
+                        const videoBg = setSectionVideoBackground(`${sectionParent}__${videoPrefix}-bg`, videoSrc);
+                        section.append(videoBg);
+                        videoBg.addEventListener('loadedmetadata', () => {
+                            videoBg.play();
+                            console.log('%cMeta Downloaded - video playing', 'color: green');
+                        });
+                        const videoParent = videoBg.closest(`.${sectionParent}`);
+                        hasBgVideoCheck(videoParent);
+
                     } else {
                         hasBgCheck(section, sectionParent);
+                    };
+
+                    const container = getSectionContainer(section, sectionParent);
+                    // console.log(container);
+
+                    return {
+                        'section': section,
+                        'container': container,
+                        'bg': bg
                     }
-
-                    // return bg;
-
-                } else if (videoPrefix) {
-                    const videoBg = setSectionVideoBackground(`${sectionParent}__${videoPrefix}-bg`, videoSrc);
-                    section.append(videoBg);
-                    videoBg.addEventListener('loadedmetadata', () => {
-                        videoBg.play();
-                        console.log('%cMeta Downloaded - video playing', 'color: green');
-                    });
-                    const videoParent = videoBg.closest(`.${sectionParent}`);
-                    hasBgVideoCheck(videoParent);
-
-                } else {
-                    hasBgCheck(section, sectionParent);
-                };
-
-                const container = getSectionContainer(section, sectionParent);
-                // console.log(container);
-
-                return {
-                    'section': section,
-                    'container': container,
-                    'bg': bg
                 }
-            }
 
-            const why = '.why, .why__choose, .why__works, .why__join',
-                solutions = '.solutions, .solutions__our, .solutions__solves, .solutions__join',
-                community = '.community, .community__why, .community__how, .community__join',
-                pricing = '.pricing, .pricing__plans, .pricing__works, .pricing__join';
+                function removeSign(sign) {
+                    const signSection = document.querySelector(sign);
+                    if (signSection) {
+                        signSection.remove();
+                    }
+                }
 
-
-            switch (id) {
-                case 0:
-
-                    const whyElements = createElement(header, 'why', 'why__bg', true);
-                    whyElements.container.innerHTML = `
+                switch (id) {
+                    case 0:
+                        // signActive();
+                        const whyElements = createElement(header, 'why', 'why__bg', true);
+                        whyElements.container.innerHTML = `
                     <div class="why__wrapper">
 
                     <div class="why__title">
@@ -304,8 +329,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     `;
 
-                    const whyChooseElements = createElement(whyElements.section, 'why__choose', false, false);
-                    whyChooseElements.container.innerHTML = `
+                        const whyChooseElements = createElement(whyElements.section, 'why__choose', false, false);
+                        whyChooseElements.container.innerHTML = `
 
                         <h2 class="title title_choose">
                         Why Choose Alivio ?
@@ -334,8 +359,8 @@ window.addEventListener('DOMContentLoaded', () => {
                         </ul>
                     `;
 
-                    const whyWorksElements = createElement(whyChooseElements.section, 'why__works', false, false);
-                    whyWorksElements.container.innerHTML = `
+                        const whyWorksElements = createElement(whyChooseElements.section, 'why__works', false, false);
+                        whyWorksElements.container.innerHTML = `
 
                     <div class="why__works-wrapper">
                         <div class="why__works-text">
@@ -348,8 +373,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </div>
                     `;
 
-                    const whyJoinElements = createElement(whyWorksElements.section, 'why__join', false, false);
-                    whyJoinElements.container.innerHTML = `
+                        const whyJoinElements = createElement(whyWorksElements.section, 'why__join', false, false);
+                        whyJoinElements.container.innerHTML = `
 
                         <div class="why__join-wrapper">
 
@@ -365,17 +390,18 @@ window.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
 
-                    const buttonWorks = document.querySelector('.button_works');
-                    modalActive(buttonWorks, modal);
+                        const buttonWorks = document.querySelector('.button_works');
+                        modalActive(buttonWorks, modal);
 
-                    removePreviousPages(solutions);
-                    removePreviousPages(community);
-                    removePreviousPages(pricing);
-                    break;
-                case 1:
+                        removeSign('.sign');
+                        removePreviousPages(solutions);
+                        removePreviousPages(community);
+                        removePreviousPages(pricing);
+                        break;
+                    case 1:
 
-                    const solutionsElements = createElement(header, 'solutions', 'solutions__bg', true);
-                    solutionsElements.container.innerHTML = `
+                        const solutionsElements = createElement(header, 'solutions', 'solutions__bg', true);
+                        solutionsElements.container.innerHTML = `
 
                         <div class="solutions__title-wrapper">
                         <h1 class="title title_l">Find Your Path to Stress Relief with Alivio’s Tailored Solutions
@@ -390,8 +416,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     `;
 
-                    const solutionsOurElements = createElement(solutionsElements.section, 'solutions__our', false, false);
-                    solutionsOurElements.container.innerHTML = `
+                        const solutionsOurElements = createElement(solutionsElements.section, 'solutions__our', false, false);
+                        solutionsOurElements.container.innerHTML = `
 
                         <h2 class="title title_our">Our Solutions</h2>
 
@@ -428,8 +454,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </ul>
                     `;
 
-                    const solutionsSolvesElements = createElement(solutionsOurElements.section, 'solutions__solves', false, false);
-                    solutionsSolvesElements.container.innerHTML = `
+                        const solutionsSolvesElements = createElement(solutionsOurElements.section, 'solutions__solves', false, false);
+                        solutionsSolvesElements.container.innerHTML = `
 
                     <h2 class="title title_solves" >How Alivio Solves Stress</h2>
 
@@ -445,8 +471,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
                             `;
 
-                    const solutionsJoinElements = createElement(solutionsSolvesElements.section, 'solutions__join', 'solutions__join-bg', true, 'join');
-                    solutionsJoinElements.container.innerHTML = `
+                        const solutionsJoinElements = createElement(solutionsSolvesElements.section, 'solutions__join', 'solutions__join-bg', true, 'join');
+                        solutionsJoinElements.container.innerHTML = `
 
                         <div class="solutions__join-wrapper">
                                 <h2 class="title title_solves-join">Be aware, manage well</h2>
@@ -457,17 +483,18 @@ window.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
 
-                    const buttonSolutions = document.querySelector('.button_solutions');
-                    modalActive(buttonSolutions, modal);
+                        const buttonSolutions = document.querySelector('.button_solutions');
+                        modalActive(buttonSolutions, modal);
 
-                    removePreviousPages(why);
-                    removePreviousPages(community);
-                    removePreviousPages(pricing);
-                    break;
-                case 2:
+                        removeSign('.sign');
+                        removePreviousPages(why);
+                        removePreviousPages(community);
+                        removePreviousPages(pricing);
+                        break;
+                    case 2:
 
-                    const communityElements = createElement(header, 'community', false, false, false, 'video', 'video/community-bg.mp4');
-                    communityElements.container.innerHTML = `
+                        const communityElements = createElement(header, 'community', false, false, false, 'video', 'video/community-bg.mp4');
+                        communityElements.container.innerHTML = `
 
                     <div class="community__wrapper">
 
@@ -485,8 +512,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </div>
                     `;
 
-                    const communityWhyElements = createElement(communityElements.section, 'community__why', false, false);
-                    communityWhyElements.container.innerHTML = `
+                        const communityWhyElements = createElement(communityElements.section, 'community__why', false, false);
+                        communityWhyElements.container.innerHTML = `
                     
                     <h2 class="title title_choose">Why Join Our Community</h2>
 
@@ -523,8 +550,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </ul>
                     `;
 
-                    const communityHowElements = createElement(communityWhyElements.section, 'community__how', false, false);
-                    communityHowElements.container.innerHTML = `
+                        const communityHowElements = createElement(communityWhyElements.section, 'community__how', false, false);
+                        communityHowElements.container.innerHTML = `
 
                     <h3 class="title title_solves">How Our Community Works</h3>
                     <p class="text text_solves text_community-how">
@@ -533,15 +560,15 @@ window.addEventListener('DOMContentLoaded', () => {
                     <img class="community__how-img" src="img/community.jpg" alt="community how">
                     `;
 
-                    function createBorder() {
-                        const border = document.createElement('span');
-                        return border;
-                    }
+                        function createBorder() {
+                            const border = document.createElement('span');
+                            return border;
+                        }
 
-                    const communityJoinElements = createElement(communityHowElements.section, 'community__join', 'community__join-bg', true, 'join');
-                    communityJoinElements.bg.append(createBorder());
-                    communityJoinElements.bg.append(createBorder());
-                    communityJoinElements.container.innerHTML = `
+                        const communityJoinElements = createElement(communityHowElements.section, 'community__join', 'community__join-bg', true, 'join');
+                        communityJoinElements.bg.append(createBorder());
+                        communityJoinElements.bg.append(createBorder());
+                        communityJoinElements.container.innerHTML = `
                     
                     <div class="community__join-wrapper">
 
@@ -556,18 +583,18 @@ window.addEventListener('DOMContentLoaded', () => {
                     </div>
                     `;
 
-                    const buttonCommunity = document.querySelector('.button_community');
-                    modalActive(buttonCommunity, modal);
+                        const buttonCommunity = document.querySelector('.button_community');
+                        modalActive(buttonCommunity, modal);
 
+                        removeSign('.sign');
+                        removePreviousPages(why);
+                        removePreviousPages(solutions);
+                        removePreviousPages(pricing);
+                        break;
+                    case 3:
 
-                    removePreviousPages(why);
-                    removePreviousPages(solutions);
-                    removePreviousPages(pricing);
-                    break;
-                case 3:
-
-                    const pricingPromoElements = createElement(header, 'pricing', false, false, false, 'video', 'video/pricing.mp4');
-                    pricingPromoElements.container.innerHTML = `
+                        const pricingPromoElements = createElement(header, 'pricing', false, false, false, 'video', 'video/pricing.mp4');
+                        pricingPromoElements.container.innerHTML = `
                         <div class="pricing__wrapper">
                             <div class="pricing__wrapper-text">
                                 <h1 class="title">Find the Perfect Plan for Your Journey</h1>
@@ -579,8 +606,8 @@ window.addEventListener('DOMContentLoaded', () => {
                         </div>
                     `;
 
-                    const pricingPlansElements = createElement(pricingPromoElements.section, 'pricing__plans', false, false);
-                    pricingPlansElements.container.innerHTML = `
+                        const pricingPlansElements = createElement(pricingPromoElements.section, 'pricing__plans', false, false);
+                        pricingPlansElements.container.innerHTML = `
 
                         <h2 class="title title_login">Our Pricing Plans</h2>
                             <div class="pricing__plans-wrapper">
@@ -644,8 +671,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     `;
 
-                    const pricingWorksElements = createElement(pricingPlansElements.section, 'pricing__works', false, false);
-                    pricingWorksElements.container.innerHTML = `
+                        const pricingWorksElements = createElement(pricingPlansElements.section, 'pricing__works', false, false);
+                        pricingWorksElements.container.innerHTML = `
 
                         <h3 class="title title_works">How Our Pricing Works</h3>
                             <p class="text text_pricing-works">
@@ -654,8 +681,8 @@ window.addEventListener('DOMContentLoaded', () => {
                         <img alt="pricing works" src="img/pricing-works.jpg" class="pricing__works-img">
                     `;
 
-                    const pricingJoinElements = createElement(pricingWorksElements.section, 'pricing__join', false, false);
-                    pricingJoinElements.container.innerHTML = `
+                        const pricingJoinElements = createElement(pricingWorksElements.section, 'pricing__join', false, false);
+                        pricingJoinElements.container.innerHTML = `
 
                         <div class="pricing__join-wrapper">
                             <div class="pricing__join-text">
@@ -674,36 +701,461 @@ window.addEventListener('DOMContentLoaded', () => {
 
                     `;
 
-                    const buttonPricing = document.querySelector('.button_pricing-join');
-                    modalActive(buttonPricing, modal);
+                        const buttonPricing = document.querySelector('.button_pricing-join');
+                        modalActive(buttonPricing, modal);
 
+                        removeSign('.sign');
+                        removePreviousPages(why);
+                        removePreviousPages(solutions);
+                        removePreviousPages(community);
+                        break;
+                };
 
-                    removePreviousPages(why);
-                    removePreviousPages(solutions);
-                    removePreviousPages(community);
-                    break;
-            };
+            }
 
         }
 
+        const regHeader = document.querySelector('.reg__header');
+        if (!regHeader) {
+            activeLink(headerLinks, footerLinks);
+        }
 
+
+        //Регистрация
+
+        function register(buttonActivate) {
+
+            const header = document.querySelector('.header');
+
+            function createRegisterBlock() {
+                const signIn = document.createElement('section'),
+                    containerBlock = document.createElement('div');
+
+                containerBlock.classList.add('container');
+                signIn.classList.add('sign');
+                signIn.append(containerBlock);
+
+                return {
+                    'sign': signIn,
+                    'container': containerBlock
+                }
+            }
+
+            function getFormData() {
+                const form = document.querySelector('.sign__form');
+
+                class User {
+                    constructor(name, surname, login, pass, birth, email) {
+                        this.name = name;
+                        this.surname = surname;
+                        this.login = login;
+                        this.pass = pass;
+                        this.birth = birth;
+                        this.email = email;
+                    };
+
+                    createWarning(blockName, errorText) {
+                        const name = document.querySelector(blockName);
+                        const parent = name.parentElement,
+                            warning = document.createElement('div');
+                        warning.classList.add('sign__form-warning');
+                        parent.append(warning);
+                        warning.innerHTML = `
+                        ${errorText}
+                    `;
+                        setTimeout(function () {
+                            warning.remove();
+                        }, 5000);
+                    }
+
+                    checkNames(name, surname) {
+                        const numberName = Number(this.name);
+                        const numberSurname = Number(this.surname);
+
+                        if (numberName) {
+                            this.name = null;
+                        } else {
+                            this.name = name;
+                        }
+
+                        if (this.name === null) {
+                            this.createWarning('[name="user_name"]', 'Incorrect name!');
+                        }
+
+                        if (numberSurname) {
+                            this.surname = null;
+
+                            if (this.surname === null) {
+                                this.createWarning('[name="user_surname"]', 'Incorrect surname!');
+                            }
+                        } else if (surname === '') {
+                            this.surname = 'undefined';
+                        } else {
+                            this.surname = surname;
+                        }
+                    };
+
+                    checkAge() {
+                        const currentYear = new Date(),
+                            age = new Date(this.birth);
+
+                        function checkYears() {
+                            const currentMonths = currentYear.getMonth(),
+                                currentDay = currentYear.getDate(),
+                                birthMonth = age.getMonth(),
+                                birthDay = age.getDate(),
+                                yearsDiff = currentYear.getFullYear() - age.getFullYear();
+
+                            if (yearsDiff !== 0) {
+                                if (birthMonth === currentMonths) {
+                                    if (birthDay <= currentDay) {
+                                        return yearsDiff;
+                                    } else {
+                                        return yearsDiff - 1;
+                                    }
+                                } else if (birthMonth > currentMonths) {
+                                    return yearsDiff - 1;
+                                } else {
+                                    return yearsDiff;
+                                }
+
+                            } else {
+                                return yearsDiff;
+                            }
+
+
+                        }
+
+                        const checkedAge = checkYears();
+
+                        if (checkedAge < 18) {
+                            this.createWarning('[name="user_birthdate"]', 'Birth less 18!');
+
+                            return false;
+                        } else {
+                            // console.log(checkedAge);
+                            // console.log('Access succeed');
+                            return {
+                                'bool': true,
+                                'years': checkedAge
+                            }
+                        }
+                    }
+                };
+
+                form.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const name = form.querySelector('[name="user_name"]').value,
+                        surname = form.querySelector('[name="user_surname"]').value,
+                        login = form.querySelector('[name="user_login"]').value,
+                        password = form.querySelector('[name="user_password"]').value,
+                        birthdate = form.querySelector('[name="user_birthdate"]').value,
+                        email = form.querySelector('[name="user_email"]').value;
+
+                    const newUser = new User(name, surname, login, password, birthdate, email);
+                    newUser.checkNames(newUser.name, newUser.surname);
+
+                    const checkAge = newUser.checkAge();
+                    // console.log(checkAge.checkedAge);
+                    newUser.birth = checkAge.years;
+
+                    if (checkAge.bool) {
+                        form.classList.add('sign__form_success');
+                        form.innerHTML = `
+                    <h2 class="title title_solves">Thanks for registration</h2>
+                    <p class="text text_success">Your login: <span>${newUser.login}</span> </p>
+                    <p class="text text_success">Your login: <span>${newUser.pass}</span> </p>
+                    `;
+
+                        localStorage.setItem(`${newUser.login}`, `${JSON.stringify(newUser)}`);
+                        // registeredUser[newUser.login] = JSON.parse(JSON.stringify(newUser));
+                        // localStorage.setItem(``)
+
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 8000);
+                    }
+                });
+            }
+
+            function clearElements(headerLinks, footerLinks) {
+
+                headerLinks.forEach(link => {
+                    if (link.classList.entries(active)) {
+                        link.classList.remove(active);
+                        switch (linkId) {
+                            case 0:
+                                const whyElements = document.querySelectorAll(why);
+                                whyElements.forEach(el => {
+                                    el.remove();
+                                });
+                            case 1:
+                                const solutionsElements = document.querySelectorAll(solutions);
+                                solutionsElements.forEach(el => {
+                                    el.remove();
+                                });
+                            case 2:
+                                const communityElements = document.querySelectorAll(community);
+                                communityElements.forEach(el => {
+                                    el.remove();
+                                });
+                            case 3:
+                                const pricingElements = document.querySelectorAll(pricing);
+                                pricingElements.forEach(el => {
+                                    el.remove();
+                                });
+
+                        }
+                    }
+                });
+
+                footerLinks.forEach(link => {
+                    if (link.classList.entries(active)) {
+                        link.classList.remove(active);
+                    }
+                })
+            }
+
+            buttonActivate.addEventListener('click', (event) => {
+                event.preventDefault();
+                clearElements(headerLinks, footerLinks);
+                disableMenu();
+                buttonActivate.classList.add(active);
+                const register = createRegisterBlock();
+                header.after(register.sign);
+                register.container.innerHTML = `
+            <h1 class="title title_registration">Registration</h1>
+            <form class="sign__form">
+
+            <div class="sign__form-wrapper">
+            <label class="sign__form-block">
+            <span>Your name *</span>
+            <input name="user_name" type="text" required>
+            </label>
+
+            <label class="sign__form-block">
+            <span>Your surname</span>
+            <input name="user_surname" type="text">
+            </label>
+
+            <label class="sign__form-block">
+            <span>Your login *</span>
+            <input name="user_login" type="text" required>
+            </label>
+
+            <label class="sign__form-block">
+            <span>Your password *</span>
+            <input name="user_password" type="password" required>
+            </label>
+
+            <label class="sign__form-block">
+            <span>Birthdate *</span>
+            <input name="user_birthdate" type="date" required>
+            </label>
+
+            <label class="sign__form-block">
+            <span>Email *</span>
+            <input name="user_email" type="email" required>
+            </label>
+
+            </div>
+            <button class="button button_register" type="submit">Register</button>
+            </div>
+
+
+            </form>
+            `;
+                getFormData();
+            });
+        };
+
+        register(registerButton);
+
+        // Вход в аккаунт 
+        const form = modal.querySelector('.login-block__login-data');
+
+        function formDataCheck() {
+            const loginInput = form.querySelector('[name="login"]'),
+                passwordInput = form.querySelector('[name="pass"]');
+
+            function findLoginPass(login, pass) {
+                const loginData = login.value,
+                    passData = pass.value;
+
+                const parseObj = {};
+                parseObj[loginData] = JSON.parse(localStorage.getItem(`${loginData}`));
+
+                const parseObjLogin = parseObj[loginData].login,
+                    parseObjPass = parseObj[loginData].pass;
+                if (parseObjLogin === loginData && parseObjPass === passData) {
+                    const close = document.querySelector('.login-block__close');
+                    close.remove();
+                    modal.classList.remove('login-active');
+                    modal.classList.add('login-loading');
+                    document.body.style.overflow = `hidden`;
+                    form.innerHTML = `
+                <h2 class="title title_login-success">Account loading</h2>
+                <img class="login-block__loading" alt="loading animation" src="img/loading.webp">
+                `;
+
+                    loading();
+                    loading()
+                        .then(result => {
+                            console.log(result);
+                            loginActive();
+                            localStorage.setItem("login", true);
+                            window.location.reload();
+                        });
+
+                    function loading() {
+                        return new Promise((resolve, reject) => {
+                            const text = form.querySelector('.title_login-success');
+                            let countDots = 1,
+                                interval;
+
+                            if (text) {
+                                interval = setInterval(function () {
+                                    if (countDots === 1) {
+                                        countDots = 2;
+                                        text.textContent = 'Account loading.'
+                                    } else if (countDots === 2) {
+                                        countDots = 3;
+                                        text.textContent = 'Account loading..'
+                                    } else {
+                                        countDots = 1;
+                                        text.textContent = 'Account loading...'
+                                    }
+                                }, 800);
+
+                            }
+
+                            setTimeout(success, 3000);
+
+                            function success() {
+                                clearInterval(interval);
+                                form.innerHTML = `
+                            <h2 class="title title_login-success">Authorization succeed</h2>
+                            `;
+
+                                setTimeout(function () {
+                                    resolve('Authorization succeed');
+                                }, 1000);
+                            }
+                        });
+
+                    }
+                }
+            };
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                findLoginPass(loginInput, passwordInput);
+            })
+        }
+
+        formDataCheck();
 
     }
 
-    activeLink(headerLinks, footerLinks);
 
-    // Вход в аккаунт 
-    const form = modal.querySelector('.login-block__login-data');
-    const loginButton = document.querySelector('.link_header');
+    // Функция активации логина
+    function loginActive() {
 
-    loginButton.addEventListener('click', (event) => {
-        event.preventDefault();
-    });
+        document.body.innerHTML = `
+            <header class="header reg__header">
+                <div class="container">
+                    <div class="header__wrapper">
+                        <div class="header__logo">
+                            <img src="icons/reg-logo.svg" alt="logo">
+                        </div>
+                        <ul class="header__links">
+                            <li class="header__link-block">
+                                <a class="link reg__header-link" href="">Link 1</a>
+                            </li>
+                            <li class="header__link-block">
+                                <a class="link reg__header-link" href="">Link 2</a>
+                            </li>
+                            <li class="header__link-block">
+                                <a class="link reg__header-link" href="">Link 3</a>
+                            </li>
+                            <li class="header__link-block">
+                                <a class="link reg__header-link" href="">Link 4</a>
+                            </li>
+                        </ul>
 
-    function formDataCheck() {
-        form.addEventListener('submit', () => {
+                        <div class="header__buttons">
+                            <div class="button reg__header-button">My profile</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+        `;
 
-        })
+    };
+
+    function loginActiveMenu() {
+        const newHeader = document.querySelector('.reg__header'),
+            links = newHeader.querySelectorAll('.link');
+
+        links.forEach(items => {
+            items.addEventListener('click', (event) => {
+                event.preventDefault();
+            })
+        });
     }
+
+    function loginActiveEvents() {
+        const button = document.querySelector('.reg__header-button'),
+            header = document.querySelector('.reg__header');
+
+        function createMyProfile(newSection) {
+            const create = document.createElement('section'),
+                container = document.createElement('div');
+            create.classList.add(`reg__${newSection}`);
+            container.classList.add('container');
+            create.append(container);
+            return create;
+        }
+
+        function getContainerElement(parentName) {
+            const parent = document.querySelector(parentName),
+                children = parent.querySelector('.container');
+            return children;
+        }
+
+        function createLogoutButton() {
+            const logout = document.createElement('div');
+            logout.classList.add('button');
+            logout.classList.add('button_logout');
+            logout.textContent = 'Logout'
+
+            return logout;
+        }
+
+        const headerButtons = document.querySelector('.header__buttons');
+        headerButtons.prepend(createLogoutButton());
+
+        const logout = document.querySelector('.button_logout');
+        logout.addEventListener('click', () => {
+
+            if (checkLogin) {
+                localStorage.removeItem("login");
+            }
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 300)
+        }, { once: true })
+
+        button.addEventListener('click', () => {
+            header.after(createMyProfile('my-profile'));
+
+            const container = getContainerElement('.reg__my-profile');
+            container.innerHTML = `
+            <h1 class="title title_my-profile">My profile</h1>
+            `
+        }, { once: true });
+    }
+
 });
 
