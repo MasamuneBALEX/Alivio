@@ -983,70 +983,84 @@ window.addEventListener('DOMContentLoaded', () => {
                     passData = pass.value;
 
                 const parseObj = {};
+
                 parseObj[loginData] = JSON.parse(localStorage.getItem(`${loginData}`));
 
-                const parseObjLogin = parseObj[loginData].login,
-                    parseObjPass = parseObj[loginData].pass;
-                if (parseObjLogin === loginData && parseObjPass === passData) {
-                    const close = document.querySelector('.login-block__close');
-                    close.remove();
-                    modal.classList.remove('login-active');
-                    modal.classList.add('login-loading');
-                    document.body.style.overflow = `hidden`;
-                    form.innerHTML = `
+                const checkLogin = JSON.parse(localStorage.getItem(`${loginData}`)),
+                    loginButton = document.querySelector('.button_login');
+
+
+                if (Boolean(checkLogin) && checkLogin.login === loginData) {
+                    const parseObjPass = parseObj[loginData].pass;
+
+                    if (passData === parseObjPass) {
+                        const close = document.querySelector('.login-block__close');
+                        close.remove();
+                        modal.classList.remove('login-active');
+                        modal.classList.add('login-loading');
+                        document.body.style.overflow = `hidden`;
+                        form.innerHTML = `
                     <h2 class="title title_login-success">Account loading</h2>
                     <img class="login-block__loading" alt="loading animation" src="img/loading.webp">
                     `;
 
-                    loading();
-                    loading()
-                        .then(result => {
-                            console.log(result);
-                            loginActive();
-                            localStorage.setItem("login", true);
-                            window.location.reload();
-                        });
+                        loading();
+                        loading()
+                            .then(result => {
+                                console.log(result);
+                                loginActive();
+                                localStorage.setItem("login", true);
+                                window.location.reload();
+                            });
 
-                    function loading() {
-                        return new Promise((resolve, reject) => {
-                            const text = form.querySelector('.title_login-success');
-                            let countDots = 1,
-                                interval;
+                        function loading() {
+                            return new Promise((resolve, reject) => {
+                                const text = form.querySelector('.title_login-success');
+                                let countDots = 1,
+                                    interval;
 
-                            if (text) {
-                                interval = setInterval(function () {
-                                    if (countDots === 1) {
-                                        countDots = 2;
-                                        text.textContent = 'Account loading.'
-                                    } else if (countDots === 2) {
-                                        countDots = 3;
-                                        text.textContent = 'Account loading..'
-                                    } else {
-                                        countDots = 1;
-                                        text.textContent = 'Account loading...'
-                                    }
-                                }, 800);
+                                if (text) {
+                                    interval = setInterval(function () {
+                                        if (countDots === 1) {
+                                            countDots = 2;
+                                            text.textContent = 'Account loading.'
+                                        } else if (countDots === 2) {
+                                            countDots = 3;
+                                            text.textContent = 'Account loading..'
+                                        } else {
+                                            countDots = 1;
+                                            text.textContent = 'Account loading...'
+                                        }
+                                    }, 800);
 
-                            }
+                                }
 
-                            setTimeout(success, 3000);
+                                setTimeout(success, 3000);
 
-                            function success() {
-                                clearInterval(interval);
-                                form.innerHTML = `
+                                function success() {
+                                    clearInterval(interval);
+                                    form.innerHTML = `
                             <h2 class="title title_login-success">Authorization succeed</h2>
                             `;
 
-                                setTimeout(function () {
-                                    resolve('Authorization succeed');
-                                }, 1000);
-                            }
-                        });
+                                    setTimeout(function () {
+                                        resolve('Authorization succeed');
+                                    }, 1000);
+                                }
+                            });
 
+                        }
+                    } else {
+
+                        passwordInput.classList.add('login-block__input_error');
+                        loginButton.classList.add('button_login-error');
+
+                        setTimeout(() => {
+                            passwordInput.classList.remove('login-block__input_error');
+                            loginButton.classList.remove('button_login-error');
+                        }, 1500);
                     }
                 } else {
-                    const loginButton = document.querySelector('.button_login');
-
                     loginInput.classList.add('login-block__input_error');
                     passwordInput.classList.add('login-block__input_error');
                     loginButton.classList.add('button_login-error');
@@ -1055,8 +1069,9 @@ window.addEventListener('DOMContentLoaded', () => {
                         loginInput.classList.remove('login-block__input_error');
                         passwordInput.classList.remove('login-block__input_error');
                         loginButton.classList.remove('button_login-error');
-                    }, 1500)
+                    }, 1500);
                 }
+
             };
 
             form.addEventListener('submit', (event) => {
