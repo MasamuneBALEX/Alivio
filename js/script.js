@@ -994,9 +994,9 @@ window.addEventListener('DOMContentLoaded', () => {
                     modal.classList.add('login-loading');
                     document.body.style.overflow = `hidden`;
                     form.innerHTML = `
-                <h2 class="title title_login-success">Account loading</h2>
-                <img class="login-block__loading" alt="loading animation" src="img/loading.webp">
-                `;
+                    <h2 class="title title_login-success">Account loading</h2>
+                    <img class="login-block__loading" alt="loading animation" src="img/loading.webp">
+                    `;
 
                     loading();
                     loading()
@@ -1044,6 +1044,18 @@ window.addEventListener('DOMContentLoaded', () => {
                         });
 
                     }
+                } else {
+                    const loginButton = document.querySelector('.button_login');
+
+                    loginInput.classList.add('login-block__input_error');
+                    passwordInput.classList.add('login-block__input_error');
+                    loginButton.classList.add('button_login-error');
+
+                    setTimeout(() => {
+                        loginInput.classList.remove('login-block__input_error');
+                        passwordInput.classList.remove('login-block__input_error');
+                        loginButton.classList.remove('button_login-error');
+                    }, 1500)
                 }
             };
 
