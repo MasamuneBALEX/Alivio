@@ -1094,7 +1094,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="container">
                     <div class="header__wrapper">
                         <div class="header__logo">
-                            <img src="icons/logo.svg" alt="logo">
+                            <img src="icons/Logo.svg" alt="logo">
                         </div>
                         <ul class="header__links">
                             <li class="header__link-block">
