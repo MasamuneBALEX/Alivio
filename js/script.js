@@ -1010,6 +1010,7 @@ window.addEventListener('DOMContentLoaded', () => {
                                 console.log(result);
                                 loginActive();
                                 localStorage.setItem("login", true);
+                                localStorage.setItem("login-name", parseObj[loginData].login)
                                 window.location.reload();
                             });
 
@@ -1093,7 +1094,7 @@ window.addEventListener('DOMContentLoaded', () => {
                 <div class="container">
                     <div class="header__wrapper">
                         <div class="header__logo">
-                            <img src="icons/reg-logo.svg" alt="logo">
+                            <img src="icons/logo.svg" alt="logo">
                         </div>
                         <ul class="header__links">
                             <li class="header__link-block">
@@ -1116,6 +1117,8 @@ window.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             </header>
+
+            <script src="js/script.js"></script>
         `;
 
     };
@@ -1135,26 +1138,24 @@ window.addEventListener('DOMContentLoaded', () => {
         const button = document.querySelector('.reg__header-button'),
             header = document.querySelector('.reg__header');
 
+        const plans = ["Free", "Standard", "Premium", "Custom"];
+
         function createMyProfile(newSection) {
-            const create = document.createElement('section'),
-                container = document.createElement('div');
+            const create = document.createElement('section');
             create.classList.add(`reg__${newSection}`);
-            container.classList.add('container');
-            create.append(container);
             return create;
         }
 
         function getContainerElement(parentName) {
-            const parent = document.querySelector(parentName),
-                children = parent.querySelector('.container');
-            return children;
+            const parent = document.querySelector(parentName);
+            return parent;
         }
 
         function createLogoutButton() {
             const logout = document.createElement('div');
             logout.classList.add('button');
             logout.classList.add('button_logout');
-            logout.textContent = 'Logout'
+            logout.textContent = 'Logout';
 
             return logout;
         }
@@ -1175,13 +1176,77 @@ window.addEventListener('DOMContentLoaded', () => {
         }, { once: true })
 
         button.addEventListener('click', () => {
-            header.after(createMyProfile('my-profile'));
+            const element = document.querySelector('.reg__my-profile');
 
-            const container = getContainerElement('.reg__my-profile');
-            container.innerHTML = `
-            <h1 class="title title_my-profile">My profile</h1>
-            `
-        }, { once: true });
+            if (!element) {
+                header.after(createMyProfile('my-profile'));
+
+                const loginName = localStorage.getItem("login-name"),
+                    loginData = JSON.parse(localStorage.getItem(loginName));
+
+                // console.log(loginData);
+
+                const container = getContainerElement('.reg__my-profile');
+                container.innerHTML = `
+            <div class="container">
+                <div class="reg__my-profile__wrapper">
+
+                    <div class="reg__my-profile__data">
+
+                        <h1 class="title title_my-profile">Profile data</h1>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Login: <span>${loginName}</span></p>
+                        </div>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Name: <span>${loginData.name}</span></p>
+                        </div>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Surname: <span data-surname>${loginData.surname}</span></p>
+                        </div>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Age: <span>${loginData.birth}</span></p>
+                        </div>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Mail: <span>${loginData.email}</span></p>
+                        </div>
+
+                    </div>
+
+                    <div class="reg__my-profile__other-data">
+                        <h1 class="title title_my-profile">Others</h1>
+
+                        <div class="reg__my-profile__info">
+                            <p class="text">Plan: <span>${plans[0]}</span></p>
+                        </div>
+
+                        <div class="button button_delete">Delete Profile</div>
+                    </div>
+            </div>
+            `;
+
+                const surname = document.querySelector('[data-surname]');
+
+                if (surname.textContent === 'undefined') {
+                    surname.parentElement.parentElement.remove();
+                }
+
+                const deleteButton = document.querySelector('.button_delete');
+
+                deleteButton.addEventListener('click', () => {
+                    localStorage.removeItem(loginName);
+                    localStorage.removeItem("login");
+                    localStorage.removeItem("login-name");
+                    window.location.reload();
+                }, { once: true });
+            } else {
+                element.remove();
+            }
+        });
     }
 
 });
